@@ -3,12 +3,22 @@
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
+// Für prisma generate brauchen wir keine echte DATABASE_URL
+const getDatabaseUrl = () => {
+  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
+  try {
+    return env("DATABASE_URL");
+  } catch {
+    return "postgresql://placeholder:placeholder@localhost:5432/placeholder";
+  }
+};
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env.DATABASE_URL || env("DATABASE_URL") || "postgresql://placeholder",
+    url: getDatabaseUrl(),
   },
 });
