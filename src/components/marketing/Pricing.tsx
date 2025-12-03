@@ -1,150 +1,131 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Check, Sparkles, Zap, Building } from 'lucide-react';
+import { Check, Sparkles, Zap, Building, ArrowRight, Shield } from 'lucide-react';
 import { GradientButton } from '@/components/shared';
+import { cn } from '@/lib/utils';
 
 const plans = [
   {
     name: 'Starter',
     price: '299',
-    description: 'Perfekt für Einzelunternehmer und kleine Teams',
-    icon: Zap,
+    description: 'Der perfekte Einstieg.',
     features: [
-      '5 KI-Agenten aktiv',
-      '500 Anrufminuten/Monat',
-      '1.000 E-Mails/Monat',
-      'Basis-Integrationen',
-      'E-Mail Support',
-      '1 Benutzer',
+      '5 KI-Agenten',
+      '500 Anrufminuten',
+      '1.000 E-Mails',
+      'Basis-Support',
     ],
     cta: 'Jetzt starten',
-    popular: false,
+    highlight: false,
   },
   {
     name: 'Professional',
     price: '699',
-    description: 'Für wachsende KMU mit höheren Anforderungen',
-    icon: Sparkles,
+    description: 'Für Wachstum gebaut.',
     features: [
-      '15 KI-Agenten aktiv',
-      '2.000 Anrufminuten/Monat',
-      '5.000 E-Mails/Monat',
-      'Alle Integrationen',
+      '15 KI-Agenten',
+      '2.000 Anrufminuten',
+      '5.000 E-Mails',
       'Priority Support',
-      '5 Benutzer',
-      'Custom Voice Training',
       'API-Zugang',
     ],
     cta: 'Kostenlos testen',
-    popular: true,
+    highlight: true,
+    badge: 'Beliebt',
   },
   {
     name: 'Enterprise',
-    price: 'Individuell',
-    description: 'Massgeschneiderte Lösung für grosse Unternehmen',
-    icon: Building,
+    price: 'Custom',
+    description: 'Maximale Power.',
     features: [
-      'Alle 30+ KI-Agenten',
-      'Unbegrenzte Anrufe',
-      'Unbegrenzte E-Mails',
-      'Dedicated Account Manager',
-      'SLA-Garantie 99.9%',
-      'Unbegrenzte Benutzer',
-      'On-Premise Option',
-      'Custom Development',
+      'Alle 30+ Agenten',
+      'Unbegrenzte Limits',
+      'SLA 99.9%',
+      'Dedizierter Manager',
+      'Custom Training',
     ],
-    cta: 'Kontakt aufnehmen',
-    popular: false,
+    cta: 'Kontaktieren',
+    highlight: false,
   },
 ];
 
 export function Pricing() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-fuchsia-100/30 to-cyan-100/30 rounded-full blur-3xl" />
+    <section className="py-32 bg-white relative overflow-hidden">
+      {/* Background Gradients */}
+      <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-gradient-to-tl from-fuchsia-50/50 to-transparent rounded-full blur-3xl -z-10" />
+      <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-gradient-to-br from-cyan-50/50 to-transparent rounded-full blur-3xl -z-10" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-fuchsia-50 to-orange-50 text-fuchsia-600 text-sm font-medium mb-4">
-            💰 Transparente Preise
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Ein Plan für <span className="gradient-text">jeden Bedarf</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Starten Sie klein und skalieren Sie mit Ihrem Unternehmen. Alle Preise in CHF, monatlich kündbar.
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Header - ACTION */}
+        <div className="text-center mb-20">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-6xl font-black text-gray-900 mb-6"
+          >
+            Bereit für die <span className="gradient-text">Zukunft?</span>
+          </motion.h2>
+          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+            Wählen Sie den Plan, der zu Ihnen passt. Keine versteckten Kosten.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Plans */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        {/* Pricing Grid */}
+        <div className="grid md:grid-cols-3 gap-8 items-center">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className={`relative bg-white rounded-3xl p-8 ${
-                plan.popular
-                  ? 'border-2 border-fuchsia-500 shadow-2xl shadow-fuchsia-500/10 scale-105 z-10'
-                  : 'border border-gray-200 shadow-lg'
-              }`}
+              whileHover={{ y: -8 }}
+              className={cn(
+                "relative rounded-3xl p-8 transition-all duration-300",
+                plan.highlight 
+                  ? "bg-white shadow-2xl shadow-fuchsia-500/10 border-2 border-fuchsia-500 scale-105 z-10" 
+                  : "bg-white shadow-xl border border-gray-100 hover:shadow-2xl hover:border-gray-200"
+              )}
             >
-              {/* Popular Badge */}
-              {plan.popular && (
+              {plan.highlight && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 text-white text-sm font-semibold shadow-lg">
-                    <Sparkles className="w-4 h-4" />
-                    Beliebteste Wahl
+                  <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 text-white text-sm font-bold shadow-lg flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" />
+                    {plan.badge}
                   </span>
                 </div>
               )}
 
-              {/* Plan Icon */}
-              <div className={`w-12 h-12 rounded-xl ${
-                plan.popular 
-                  ? 'bg-gradient-to-br from-fuchsia-500 to-orange-500' 
-                  : 'bg-gray-100'
-              } flex items-center justify-center mb-6`}>
-                <plan.icon className={`w-6 h-6 ${plan.popular ? 'text-white' : 'text-gray-600'}`} />
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                <p className="text-gray-500 text-sm font-medium mb-6">{plan.description}</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-black text-gray-900">{plan.price}</span>
+                  {plan.price !== 'Custom' && <span className="text-gray-500 font-medium">CHF / Mt.</span>}
+                </div>
               </div>
 
-              {/* Plan Name & Price */}
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-              <div className="flex items-baseline gap-1 mb-2">
-                {plan.price !== 'Individuell' && <span className="text-gray-500">CHF</span>}
-                <span className="text-4xl font-extrabold text-gray-900">{plan.price}</span>
-                {plan.price !== 'Individuell' && <span className="text-gray-500">/Monat</span>}
-              </div>
-              <p className="text-gray-600 mb-6">{plan.description}</p>
-
-              {/* Features */}
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-4 mb-8">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <div className={`w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center ${
-                      plan.popular ? 'bg-fuchsia-100 text-fuchsia-600' : 'bg-green-100 text-green-600'
-                    }`}>
+                  <li key={feature} className="flex items-center gap-3 text-gray-600 font-medium">
+                    <div className={cn(
+                      "w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0",
+                      plan.highlight ? "bg-fuchsia-100 text-fuchsia-600" : "bg-gray-100 text-gray-500"
+                    )}>
                       <Check className="w-3 h-3" />
                     </div>
-                    <span className="text-gray-700">{feature}</span>
+                    {feature}
                   </li>
                 ))}
               </ul>
 
-              {/* CTA */}
               <GradientButton 
-                variant={plan.popular ? 'primary' : 'secondary'} 
+                variant={plan.highlight ? 'primary' : 'secondary'} 
                 className="w-full"
+                size="lg"
               >
                 {plan.cta}
               </GradientButton>
@@ -152,19 +133,31 @@ export function Pricing() {
           ))}
         </div>
 
-        {/* Bottom Note */}
-        <motion.p
+        {/* Trust / Guarantee */}
+        <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center text-gray-500 mt-12"
+          className="mt-20 pt-10 border-t border-gray-100 text-center"
         >
-          ✓ 14 Tage kostenlos testen &nbsp;•&nbsp; ✓ Keine Kreditkarte erforderlich &nbsp;•&nbsp; ✓ Jederzeit kündbar
-        </motion.p>
+          <p className="text-gray-400 font-medium flex flex-wrap justify-center gap-8">
+            <span className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-fuchsia-500" />
+              14 Tage kostenlos testen
+            </span>
+            <span className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-orange-500" />
+              In 5 Minuten eingerichtet
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-cyan-500" />
+              Jederzeit kündbar
+            </span>
+          </p>
+        </motion.div>
       </div>
     </section>
   );
 }
 
 export default Pricing;
-
