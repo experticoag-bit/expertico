@@ -1,0 +1,684 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==================== AUTH & USERS ====================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  image         String?
+  role          UserRole  @default(OWNER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  organization  Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  
+  sessions      Session[]
+  accounts      Account[]
+  activities    ActivityLog[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([provider, providerAccountId])
+}
+
+model Organization {
+  id            String    @id @default(cuid())
+  name          String
+  slug          String    @unique
+  logo          String?
+  phone         String?
+  email         String?
+  website       String?
+  address       String?
+  industry      String?
+  size          CompanySize @default(SMALL)
+  plan          PlanType    @default(STARTER)
+  stripeCustomerId String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  users         User[]
+  agents        Agent[]
+  calls         Call[]
+  emails        Email[]
+  leads         Lead[]
+  tasks         Task[]
+  documents     Document[]
+  integrations  Integration[]
+  contentPosts  ContentPost[]
+  invoices      Invoice[]
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum CompanySize {
+  SOLO
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum PlanType {
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  sessionToken String   @unique
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ==================== KI-AGENTEN ====================
+
+model Agent {
+  id              String      @id @default(cuid())
+  type            AgentType
+  name            String
+  description     String?
+  status          AgentStatus @default(INACTIVE)
+  config          Json        @default("{}")
+  
+  // ElevenLabs / Vapi Config
+  voiceId         String?
+  voiceConfig     Json?
+  
+  // Performance Metrics
+  totalCalls      Int         @default(0)
+  totalEmails     Int         @default(0)
+  totalTasks      Int         @default(0)
+  avgResponseTime Float?
+  successRate     Float?
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  
+  calls           Call[]
+  emails          Email[]
+  tasks           Task[]
+  logs            AgentLog[]
+}
+
+enum AgentType {
+  REZEPTION
+  EMAIL
+  MARKETING
+  BUCHHALTUNG
+  BACKOFFICE
+  LEAD_QUALIFIER
+  TERMINIERUNG
+  SUPPORT
+  FOLLOW_UP
+  KUNDENZUFRIEDENHEIT
+  WEBSITE
+  LOCAL_MARKETING
+  WERBE
+  SALES_SUPPORT
+  TALENTSCOUT
+  DATENBROKER
+  SEGMENT_PERSONA
+  SCORING
+  LEAD_AKTIVIERUNG
+  STARTUP
+  BUSINESSPLAN
+  TECHNOLOGIE
+  AGENT_OF_AGENTS
+}
+
+enum AgentStatus {
+  ACTIVE
+  INACTIVE
+  PAUSED
+  ERROR
+  LEARNING
+}
+
+model AgentLog {
+  id          String    @id @default(cuid())
+  agentId     String
+  type        LogType
+  message     String
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  
+  agent       Agent     @relation(fields: [agentId], references: [id], onDelete: Cascade)
+}
+
+enum LogType {
+  INFO
+  WARNING
+  ERROR
+  SUCCESS
+  ACTION
+}
+
+// ==================== TELEFON / CALLS ====================
+
+model Call {
+  id              String      @id @default(cuid())
+  twilioSid       String?     @unique
+  direction       CallDirection
+  status          CallStatus  @default(PENDING)
+  
+  // Caller Info
+  callerNumber    String
+  callerName      String?
+  
+  // Call Details
+  startedAt       DateTime?
+  endedAt         DateTime?
+  duration        Int?
+  recordingUrl    String?
+  
+  // AI Processing
+  transcript      String?     @db.Text
+  summary         String?     @db.Text
+  sentiment       Sentiment?
+  intent          String?
+  actionRequired  Boolean     @default(false)
+  
+  // Follow-up
+  appointmentDate DateTime?
+  notes           String?     @db.Text
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  agent           Agent?      @relation(fields: [agentId], references: [id])
+  agentId         String?
+  lead            Lead?       @relation(fields: [leadId], references: [id])
+  leadId          String?
+  tasks           Task[]
+}
+
+enum CallDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum CallStatus {
+  PENDING
+  RINGING
+  IN_PROGRESS
+  COMPLETED
+  MISSED
+  FAILED
+  VOICEMAIL
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+  URGENT
+}
+
+// ==================== E-MAIL ====================
+
+model Email {
+  id              String      @id @default(cuid())
+  externalId      String?     @unique
+  direction       EmailDirection
+  status          EmailStatus @default(UNREAD)
+  
+  // Email Content
+  from            String
+  to              String[]
+  cc              String[]
+  subject         String
+  bodyText        String?     @db.Text
+  bodyHtml        String?     @db.Text
+  attachments     Json?
+  
+  // AI Processing
+  summary         String?
+  category        EmailCategory?
+  priority        Priority    @default(NORMAL)
+  sentiment       Sentiment?
+  suggestedReply  String?     @db.Text
+  
+  // Draft Response
+  draftReply      String?     @db.Text
+  draftApproved   Boolean     @default(false)
+  replySentAt     DateTime?
+  
+  receivedAt      DateTime
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  agent           Agent?      @relation(fields: [agentId], references: [id])
+  agentId         String?
+  lead            Lead?       @relation(fields: [leadId], references: [id])
+  leadId          String?
+  tasks           Task[]
+}
+
+enum EmailDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum EmailStatus {
+  UNREAD
+  READ
+  PROCESSING
+  DRAFT_READY
+  REPLIED
+  ARCHIVED
+  SPAM
+}
+
+enum EmailCategory {
+  INQUIRY
+  SUPPORT
+  SALES
+  INVOICE
+  NEWSLETTER
+  PERSONAL
+  OTHER
+}
+
+enum Priority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+// ==================== LEADS & CRM ====================
+
+model Lead {
+  id              String      @id @default(cuid())
+  status          LeadStatus  @default(NEW)
+  
+  // Contact Info
+  email           String?
+  phone           String?
+  firstName       String?
+  lastName        String?
+  company         String?
+  position        String?
+  
+  // Lead Details
+  source          LeadSource?
+  score           Int         @default(0)
+  scoreDetails    Json?
+  persona         String?
+  segment         String?
+  
+  // Qualification
+  budget          String?
+  timeline        String?
+  needs           String?     @db.Text
+  qualified       Boolean     @default(false)
+  qualifiedAt     DateTime?
+  
+  // Social Data
+  linkedinUrl     String?
+  socialInsights  Json?
+  
+  // Activity
+  lastContactAt   DateTime?
+  nextFollowUpAt  DateTime?
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  
+  calls           Call[]
+  emails          Email[]
+  tasks           Task[]
+  activities      LeadActivity[]
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+  INACTIVE
+}
+
+enum LeadSource {
+  WEBSITE
+  PHONE
+  EMAIL
+  REFERRAL
+  SOCIAL
+  EVENT
+  ADS
+  OTHER
+}
+
+model LeadActivity {
+  id          String    @id @default(cuid())
+  leadId      String
+  type        String
+  description String
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+}
+
+// ==================== AUFGABEN ====================
+
+model Task {
+  id              String      @id @default(cuid())
+  title           String
+  description     String?     @db.Text
+  status          TaskStatus  @default(OPEN)
+  priority        Priority    @default(NORMAL)
+  dueDate         DateTime?
+  completedAt     DateTime?
+  
+  // Source
+  sourceType      TaskSource?
+  
+  // Assignment
+  assignedTo      String?
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  agent           Agent?      @relation(fields: [agentId], references: [id])
+  agentId         String?
+  call            Call?       @relation(fields: [callId], references: [id])
+  callId          String?
+  email           Email?      @relation(fields: [emailId], references: [id])
+  emailId         String?
+  lead            Lead?       @relation(fields: [leadId], references: [id])
+  leadId          String?
+}
+
+enum TaskStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskSource {
+  CALL
+  EMAIL
+  MANUAL
+  AGENT
+  LEAD
+}
+
+// ==================== MARKETING & CONTENT ====================
+
+model ContentPost {
+  id              String      @id @default(cuid())
+  type            ContentType
+  status          ContentStatus @default(DRAFT)
+  
+  // Content
+  title           String?
+  body            String?     @db.Text
+  mediaUrls       String[]
+  hashtags        String[]
+  
+  // Scheduling
+  channels        String[]
+  scheduledFor    DateTime?
+  publishedAt     DateTime?
+  
+  // Performance
+  impressions     Int         @default(0)
+  engagement      Int         @default(0)
+  clicks          Int         @default(0)
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+}
+
+enum ContentType {
+  SOCIAL_POST
+  BLOG_ARTICLE
+  VIDEO_SCRIPT
+  AD_COPY
+  EMAIL_CAMPAIGN
+  NEWSLETTER
+}
+
+enum ContentStatus {
+  IDEA
+  DRAFT
+  REVIEW
+  APPROVED
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+// ==================== BUCHHALTUNG ====================
+
+model Document {
+  id              String      @id @default(cuid())
+  type            DocumentType
+  status          DocumentStatus @default(PENDING)
+  
+  // File Info
+  fileName        String
+  fileUrl         String
+  fileSize        Int?
+  mimeType        String?
+  
+  // OCR & Extraction
+  ocrText         String?     @db.Text
+  extractedData   Json?
+  
+  // Accounting
+  amount          Float?
+  currency        String?     @default("CHF")
+  date            DateTime?
+  vendor          String?
+  category        String?
+  taxRate         Float?
+  
+  // Processing
+  bookedAt        DateTime?
+  bookingRef      String?
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+}
+
+enum DocumentType {
+  INVOICE_IN
+  INVOICE_OUT
+  RECEIPT
+  BANK_STATEMENT
+  CONTRACT
+  OTHER
+}
+
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  EXTRACTED
+  REVIEW
+  BOOKED
+  ERROR
+}
+
+model Invoice {
+  id              String      @id @default(cuid())
+  number          String
+  type            InvoiceType
+  status          InvoiceStatus @default(DRAFT)
+  
+  // Client
+  clientName      String
+  clientEmail     String?
+  clientAddress   String?
+  
+  // Amounts
+  subtotal        Float
+  taxRate         Float       @default(8.1)
+  taxAmount       Float
+  total           Float
+  currency        String      @default("CHF")
+  
+  // Dates
+  issueDate       DateTime
+  dueDate         DateTime
+  paidAt          DateTime?
+  
+  // Items
+  items           Json
+  
+  // PDF
+  pdfUrl          String?
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+}
+
+enum InvoiceType {
+  OUTGOING
+  INCOMING
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+// ==================== INTEGRATIONS ====================
+
+model Integration {
+  id              String      @id @default(cuid())
+  type            IntegrationType
+  status          IntegrationStatus @default(DISCONNECTED)
+  
+  // OAuth / API
+  accessToken     String?
+  refreshToken    String?
+  tokenExpiresAt  DateTime?
+  apiKey          String?
+  config          Json?
+  
+  // Sync
+  lastSyncAt      DateTime?
+  syncError       String?
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  
+  @@unique([organizationId, type])
+}
+
+enum IntegrationType {
+  GMAIL
+  OUTLOOK
+  GOOGLE_CALENDAR
+  OUTLOOK_CALENDAR
+  CALCOM
+  TWILIO
+  ELEVENLABS
+  STRIPE
+  GOOGLE_DRIVE
+  ONEDRIVE
+  SLACK
+  TEAMS
+  LINKEDIN
+  INSTAGRAM
+  FACEBOOK
+}
+
+enum IntegrationStatus {
+  CONNECTED
+  DISCONNECTED
+  ERROR
+  SYNCING
+}
+
+// ==================== ACTIVITY LOG ====================
+
+model ActivityLog {
+  id          String    @id @default(cuid())
+  userId      String?
+  action      String
+  entityType  String?
+  entityId    String?
+  metadata    Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime  @default(now())
+  
+  user        User?     @relation(fields: [userId], references: [id])
+}

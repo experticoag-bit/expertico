@@ -1,0 +1,27 @@
+📋 Environment Variables für Vercel
+====================================
+
+Kopiere diese in Vercel Dashboard → Settings → Environment Variables:
+
+DATABASE_URL=postgresql://postgres.kikbavrrynrbnqefbqpn:NewHorizon2023!!!!@aws-1-eu-central-2.pooler.supabase.com:5432/postgres?pgbouncer=true&connection_limit=1
+
+DIRECT_URL=postgresql://postgres.kikbavrrynrbnqefbqpn:NewHorizon2023!!!!@aws-1-eu-central-2.pooler.supabase.com:5432/postgres
+
+NEXTAUTH_SECRET=K9DyoELpuHfpO2p7QaJx1T/TFoukMttbR+zvFPuWCo4=
+
+NEXTAUTH_URL=https://expertico-xxxxx.vercel.app
+(⚠️ Wird automatisch von Vercel gesetzt - nach dem ersten Deploy anpassen!)
+
+SUPABASE_URL=https://kikbavrrynrbnqefbqpn.supabase.co
+
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtpa2JhdnJyeW5yYm5xZWZicXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNjAzMzksImV4cCI6MjA3OTgzNjMzOX0.2MjOlRlyH8fH0XFk_pXJsDtjXMeqKRjbIR324LYKnYY
+
+SUPABASE_SERVICE_ROLE_KEY=sbp_201fa6a5ab37c726331d1c8881f718e6f21479f6
+
+═══════════════════════════════════════════
+
+📝 Anleitung:
+1. Nach dem ersten Deploy: vercel.com → Dein Projekt → Settings → Environment Variables
+2. Füge alle Variablen oben hinzu (für Production, Preview, Development)
+3. Redeploy: vercel --prod
+

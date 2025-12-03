@@ -1,0 +1,23 @@
+📋 ENVIRONMENT VARIABLES FÜR VERCEL
+====================================
+
+Kopiere diese in Vercel Dashboard → Settings → Environment Variables:
+
+DATABASE_URL=postgresql://postgres.utrzzinplffvlzxwavkv:NewHorizon2023!!!!@aws-1-eu-central-2.pooler.supabase.com:5432/postgres
+
+DIRECT_URL=postgresql://postgres.utrzzinplffvlzxwavkv:NewHorizon2023!!!!@aws-1-eu-central-2.pooler.supabase.com:5432/postgres
+
+NEXTAUTH_SECRET=K9DyoELpuHfpO2p7QaJx1T/TFoukMttbR+zvFPuWCo4=
+
+NEXTAUTH_URL=https://expertico-xxxxx.vercel.app
+(⚠️ Wird automatisch von Vercel gesetzt - nach dem ersten Deploy anpassen!)
+
+SUPABASE_URL=https://utrzzinplffvlzxwavkv.supabase.co
+
+NEXT_PUBLIC_SUPABASE_URL=https://utrzzinplffvlzxwavkv.supabase.co
+
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0cnp6aW5wbGZmdmx6eHdhdmt2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NzI3OTcsImV4cCI6MjA4MDM0ODc5N30.MQlnw7QAuMJnYIqFNSyi24BStWcU7V0f4k-uSWY63-M
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0cnp6aW5wbGZmdmx6eHdhdmt2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NzI3OTcsImV4cCI6MjA4MDM0ODc5N30.MQlnw7QAuMJnYIqFNSyi24BStWcU7V0f4k-uSWY63-M
+
+SUPABASE_SERVICE_ROLE_KEY=sbp_201fa6a5ab37c726331d1c8881f718e6f21479f6

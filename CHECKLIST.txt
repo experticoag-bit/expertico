@@ -1,0 +1,16 @@
+📋 EXPERTICO SETUP CHECKLIST
+
+□ 1. Supabase Dashboard öffnen (app.supabase.com)
+□ 2. Connection String kopieren (Settings → Database → URI)
+□ 3. Direct URL erstellen (gleicher String, Port 5432 statt 6543)
+□ 4. API Keys kopieren (Settings → API)
+□ 5. .env Datei erstellen
+□ 6. NEXTAUTH_SECRET generieren (openssl rand -base64 32)
+□ 7. Alle Werte in .env eintragen
+□ 8. npm run db:generate ausführen
+□ 9. npm run db:push ausführen
+□ 10. npm run db:studio öffnen (optional - zum Testen)
+□ 11. npm run dev starten
+□ 12. Browser öffnen: http://localhost:3000
+
+✅ FERTIG!

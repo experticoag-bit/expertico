@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "🚀 Quick Setup - Connection String eintragen"
+echo "============================================="
+echo ""
+echo "1. Die Supabase-Seite sollte jetzt geöffnet sein"
+echo "2. Scrolle zu 'Connection string'"
+echo "3. Klicke auf Tab 'URI'"
+echo "4. Kopiere den gesamten String"
+echo ""
+echo "Dann führe aus:"
+echo "  node update_env_db.js"
+echo ""
+echo "ODER sag mir einfach den Connection String hier!"

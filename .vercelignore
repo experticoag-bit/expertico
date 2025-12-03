@@ -1,0 +1,13 @@
+node_modules
+.next
+.env
+.env.local
+.DS_Store
+*.log
+.git
+.gitignore
+README.md
+*.md
+CHECKLIST.txt
+QUICK_GUIDE.txt
+

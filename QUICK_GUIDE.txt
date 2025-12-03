@@ -1,0 +1,41 @@
+🚀 SCHNELL-ANLEITUNG: Supabase einrichten
+
+═══════════════════════════════════════════
+
+SCHRITT 1: Supabase-Daten holen
+────────────────────────────────
+1. Gehe zu: app.supabase.com
+2. Settings → Database → Connection string → URI
+3. Kopiere den String
+4. Settings → API → Kopiere URL und anon Key
+
+SCHRITT 2: .env Datei öffnen
+────────────────────────────
+Im Terminal:
+  cd expertico
+  open -a TextEdit .env
+
+Oder in Cursor/VS Code:
+  Öffne .env Datei
+
+SCHRITT 3: Werte eintragen
+──────────────────────────
+Ersetze in .env:
+  [PROJECT-REF] → Deine Projekt-Referenz
+  [PASSWORD] → Dein DB-Passwort
+  [REGION] → Deine Region
+  [DEIN-ANON-KEY-HIER] → Dein anon Key
+
+SCHRITT 4: Datenbank pushen
+────────────────────────────
+npm run db:push
+
+SCHRITT 5: App starten
+─────────────────────
+npm run dev
+
+═══════════════════════════════════════════
+
+📖 Detaillierte Anleitungen:
+  - SUPABASE_DATEN_HOLEN.md
+  - ENV_BEARBEITEN.md
