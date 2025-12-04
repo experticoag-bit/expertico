@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Phone, Mail, BarChart3, Bot, Calculator, Users, Sparkles, Zap, Shield } from 'lucide-react';
 import { GradientButton } from '@/components/shared';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const agents = [
   { icon: Phone, label: 'Rezeption', color: 'from-fuchsia-500 to-pink-500', glow: 'shadow-glow-fuchsia' },
@@ -34,6 +35,12 @@ const itemVariants = {
 };
 
 export function Hero() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-b from-white via-fuchsia-50/30 to-white">
       {/* Animated Gradient Orbs - Premium */}
@@ -44,29 +51,31 @@ export function Hero() {
       {/* Premium Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
 
-      {/* Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {typeof window !== 'undefined' && [...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-fuchsia-400/40 rounded-full"
-            initial={{
-              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920),
-              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080),
-              opacity: 0,
-            }}
-            animate={{
-              y: [null, Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080)],
-              opacity: [0, 0.6, 0],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
-      </div>
+      {/* Floating Particles - Client Only */}
+      {mounted && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-fuchsia-400/40 rounded-full"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                opacity: 0,
+              }}
+              animate={{
+                y: [null, Math.random() * window.innerHeight],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: Math.random() * 10 + 10,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 pt-32 pb-24">
         <motion.div
