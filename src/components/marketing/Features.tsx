@@ -41,7 +41,7 @@ const features = [
 
 export function Features() {
   return (
-    <section className="py-32 bg-white relative overflow-hidden">
+    <section id="features" className="py-32 bg-white relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-gradient-to-b from-gray-50 to-transparent rounded-full blur-3xl -z-10" />
       

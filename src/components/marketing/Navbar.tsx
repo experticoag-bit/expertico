@@ -9,15 +9,15 @@ import { Logo, GradientButton } from '@/components/shared';
 const navLinks = [
   { 
     label: 'Produkt', 
-    href: '#',
+    href: '#features',
     children: [
-      { label: 'Alle Agenten', href: '/agents' },
-      { label: 'Rezeption', href: '/agents/rezeption' },
-      { label: 'E-Mail', href: '/agents/email' },
-      { label: 'Marketing', href: '/agents/marketing' },
+      { label: 'Alle Agenten', href: '/dashboard/agents' },
+      { label: 'Rezeption', href: '/dashboard/agents' },
+      { label: 'E-Mail', href: '/dashboard/agents' },
+      { label: 'Marketing', href: '/dashboard/agents' },
     ]
   },
-  { label: 'Preise', href: '/pricing' },
+  { label: 'Preise', href: '/#pricing' },
   { label: 'Über uns', href: '/about' },
   { label: 'Blog', href: '/blog' },
 ];
