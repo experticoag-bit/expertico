@@ -1,30 +1,26 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Check, Sparkles, Zap, Building, ArrowRight, Shield } from 'lucide-react';
-import { GradientButton } from '@/components/shared';
+import { CheckCircle, Zap, Shield, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const plans = [
   {
     name: 'Starter',
-    price: '299',
-    description: 'Der perfekte Einstieg.',
-    features: [
-      '5 KI-Agenten',
-      '500 Anrufminuten',
-      '1.000 E-Mails',
-      'Basis-Support',
-    ],
+    price: 'CHF 299',
+    period: '/ Monat',
+    description: 'Für lokale Teams, die ihre ersten Agenten aktivieren.',
+    features: ['5 Agenten', '500 Anrufminuten', '1.000 E-Mails', 'E-Mail Support'],
     cta: 'Jetzt starten',
     highlight: false,
   },
   {
     name: 'Professional',
-    price: '699',
-    description: 'Für Wachstum gebaut.',
+    price: 'CHF 699',
+    period: '/ Monat',
+    description: 'Skaliert mit Marketing, Sales und Backoffice.',
     features: [
-      '15 KI-Agenten',
+      '15 Agenten',
       '2.000 Anrufminuten',
       '5.000 E-Mails',
       'Priority Support',
@@ -36,125 +32,98 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: 'Custom',
-    description: 'Maximale Power.',
-    features: [
-      'Alle 30+ Agenten',
-      'Unbegrenzte Limits',
-      'SLA 99.9%',
-      'Dedizierter Manager',
-      'Custom Training',
-    ],
-    cta: 'Kontaktieren',
+    price: 'Auf Anfrage',
+    period: '',
+    description: 'Individuelle SLAs, Custom Training und Integrationen.',
+    features: ['Alle 30+ Agenten', 'Unbegrenzte Limits', 'SLA 99.9%', 'Dedicated Success Team'],
+    cta: 'Beratung buchen',
     highlight: false,
   },
 ];
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-32 bg-white relative overflow-hidden">
-      {/* Background Gradients */}
-      <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-gradient-to-tl from-fuchsia-50/50 to-transparent rounded-full blur-3xl -z-10" />
-      <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-gradient-to-br from-cyan-50/50 to-transparent rounded-full blur-3xl -z-10" />
-
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Header - ACTION */}
-        <div className="text-center mb-20">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-black text-gray-900 mb-6"
-          >
-            Bereit für die <span className="gradient-text">Zukunft?</span>
-          </motion.h2>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-            Wählen Sie den Plan, der zu Ihnen passt. Keine versteckten Kosten.
+    <section id="pricing" className="py-20 bg-white lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="text-fuchsia-600 font-bold tracking-wide uppercase text-sm">Preise</span>
+          <h2 className="mt-3 text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            Transparente Pakete ohne Zusatzkosten
+          </h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Wählen Sie den Umfang, der zu Ihren Prozessen passt. Upgrades sind jederzeit möglich.
           </p>
         </div>
 
-        {/* Pricing Grid */}
-        <div className="grid md:grid-cols-3 gap-8 items-center">
-          {plans.map((plan, i) => (
-            <motion.div
+        <div className="grid gap-8 lg:grid-cols-3 lg:gap-8">
+          {plans.map((plan) => (
+            <div
               key={plan.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -8 }}
               className={cn(
-                "relative rounded-3xl p-8 transition-all duration-300",
-                plan.highlight 
-                  ? "bg-white shadow-2xl shadow-fuchsia-500/10 border-2 border-fuchsia-500 scale-105 z-10" 
-                  : "bg-white shadow-xl border border-gray-100 hover:shadow-2xl hover:border-gray-200"
+                "relative flex flex-col rounded-3xl border p-8 shadow-sm transition-all duration-300",
+                plan.highlight
+                  ? "border-fuchsia-500 bg-white ring-4 ring-fuchsia-500/10 scale-105 z-10"
+                  : "border-gray-200 bg-white hover:border-fuchsia-200 hover:shadow-lg"
               )}
             >
               {plan.highlight && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 text-white text-sm font-bold shadow-lg flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" />
+                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 px-4 py-1 text-xs font-bold text-white shadow-md">
+                    <Zap className="mr-1 h-3 w-3" fill="currentColor" />
                     {plan.badge}
                   </span>
                 </div>
               )}
 
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                <p className="text-gray-500 text-sm font-medium mb-6">{plan.description}</p>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-black text-gray-900">{plan.price}</span>
-                  {plan.price !== 'Custom' && <span className="text-gray-500 font-medium">CHF / Mt.</span>}
+              <div className="mb-6">
+                <h3 className={cn("text-lg font-bold", plan.highlight ? "text-fuchsia-600" : "text-gray-900")}>
+                  {plan.name}
+                </h3>
+                <div className="mt-4 flex items-baseline text-gray-900">
+                  <span className="text-4xl font-extrabold tracking-tight">{plan.price}</span>
+                  <span className="ml-1 text-sm font-medium text-gray-500">{plan.period}</span>
                 </div>
+                <p className="mt-4 text-sm text-gray-500 leading-relaxed">{plan.description}</p>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="mb-8 space-y-4 flex-1">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-3 text-gray-600 font-medium">
-                    <div className={cn(
-                      "w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0",
-                      plan.highlight ? "bg-fuchsia-100 text-fuchsia-600" : "bg-gray-100 text-gray-500"
-                    )}>
-                      <Check className="w-3 h-3" />
-                    </div>
-                    {feature}
+                  <li key={feature} className="flex items-start">
+                    <CheckCircle className={cn("h-5 w-5 flex-shrink-0", plan.highlight ? "text-fuchsia-500" : "text-gray-400")} />
+                    <span className="ml-3 text-sm font-medium text-gray-600">{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              <GradientButton 
-                variant={plan.highlight ? 'primary' : 'secondary'} 
-                className="w-full"
-                size="lg"
+              <Link
+                href={plan.highlight ? '/register' : '/contact'}
+                className={cn(
+                  "block w-full rounded-xl py-3 text-center text-sm font-bold transition-all",
+                  plan.highlight
+                    ? "bg-gradient-to-r from-fuchsia-600 to-orange-500 text-white hover:brightness-110 shadow-lg hover:shadow-xl"
+                    : "bg-gray-50 text-gray-900 hover:bg-gray-100 border border-gray-200"
+                )}
               >
                 {plan.cta}
-              </GradientButton>
-            </motion.div>
+              </Link>
+            </div>
           ))}
         </div>
 
-        {/* Trust / Guarantee */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-20 pt-10 border-t border-gray-100 text-center"
-        >
-          <p className="text-gray-400 font-medium flex flex-wrap justify-center gap-8">
-            <span className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-fuchsia-500" />
-              14 Tage kostenlos testen
-            </span>
-            <span className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-orange-500" />
-              In 5 Minuten eingerichtet
-            </span>
-            <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-cyan-500" />
-              Jederzeit kündbar
-            </span>
-          </p>
-        </motion.div>
+        <div className="mt-16 flex flex-wrap justify-center gap-8 text-sm font-medium text-gray-500">
+          <div className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-fuchsia-500" />
+            <span>14 Tage kostenlos testen</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Zap className="h-5 w-5 text-orange-500" />
+            <span>In 5 Minuten live</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-emerald-500" />
+            <span>Jederzeit kündbar</span>
+          </div>
+        </div>
       </div>
     </section>
   );

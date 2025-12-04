@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { LucideIcon, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { LucideIcon, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface StatsCardProps {
@@ -27,77 +27,53 @@ export function StatsCard({
 }: StatsCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay, type: 'spring', stiffness: 200, damping: 20 }}
-      whileHover={{ y: -4, scale: 1.02 }}
-      className="group relative"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, type: 'spring', stiffness: 140, damping: 18 }}
+      className="h-full"
     >
-      <div className="relative h-full bg-white/80 backdrop-blur-xl rounded-3xl border border-gray-200/50 p-6 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden">
-        {/* Gradient Background on Hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/0 via-orange-500/0 to-cyan-500/0 group-hover:from-fuchsia-500/5 group-hover:via-orange-500/5 group-hover:to-cyan-500/5 transition-all duration-500" />
-        
-        {/* Shine Effect */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-        </div>
-
-        <div className="relative flex items-start justify-between">
+      <div className="relative flex h-full flex-col justify-between border border-gray-200 bg-white px-5 py-4 shadow-sm transition-all hover:-translate-y-1 hover:border-gray-300 hover:shadow-md rounded-none">
+        <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
               {title}
             </p>
-            <div className="flex items-baseline gap-3 mb-2">
-              <h3 className="text-3xl font-black text-gray-900 tabular-nums">
-                {value}
-              </h3>
-              {change !== undefined && (
+            <div className="mt-2 flex items-baseline gap-3">
+              <h3 className="text-3xl font-bold text-gray-900 tabular-nums">{value}</h3>
+              {typeof change === 'number' && (
                 <motion.span
-                  initial={{ opacity: 0, scale: 0.5 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: delay + 0.2, type: 'spring' }}
+                  transition={{ delay: delay + 0.1, type: 'spring', stiffness: 200, damping: 20 }}
                   className={cn(
-                    'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold',
-                    trend === 'up' 
-                      ? 'bg-green-100 text-green-700 border border-green-200' 
-                      : 'bg-red-100 text-red-700 border border-red-200'
+                    'inline-flex items-center gap-1 border px-2 py-0.5 text-xs font-semibold',
+                    trend === 'up'
+                      ? 'border-emerald-100 bg-emerald-50 text-emerald-700'
+                      : 'border-rose-100 bg-rose-50 text-rose-700'
                   )}
                 >
                   {trend === 'up' ? (
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                   ) : (
-                    <ArrowDownRight className="w-3.5 h-3.5" />
+                    <ArrowDownRight className="h-3.5 w-3.5" />
                   )}
                   {Math.abs(change)}%
                 </motion.span>
               )}
             </div>
-            {description && (
-              <p className="text-xs font-medium text-gray-500 mt-1">
-                {description}
-              </p>
-            )}
+            {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
           </div>
-          
-          {/* Icon Container */}
-          <motion.div
-            whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
-            transition={{ duration: 0.5 }}
+          <div
             className={cn(
-              'relative w-14 h-14 rounded-2xl bg-gradient-to-br p-[2px] shadow-lg',
+              'flex h-10 w-10 items-center justify-center border border-gray-200 text-gray-700 rounded-none bg-gray-50',
+              iconColor && 'bg-gradient-to-br text-white',
               iconColor
             )}
           >
-            <div className="w-full h-full rounded-2xl bg-white flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-white group-hover:to-gray-50 transition-all">
-              <Icon className="w-7 h-7 text-gray-700 group-hover:text-fuchsia-600 transition-colors" />
-            </div>
-            {/* Glow Effect */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity blur-sm" />
-          </motion.div>
+            <Icon className="h-5 w-5" />
+          </div>
         </div>
-
-        {/* Bottom Accent Line */}
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-fuchsia-500 via-orange-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="mt-4 h-1 w-full bg-gray-100" />
       </div>
     </motion.div>
   );

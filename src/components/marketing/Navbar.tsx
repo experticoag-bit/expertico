@@ -1,193 +1,277 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { Logo, GradientButton } from '@/components/shared';
+import { usePathname } from 'next/navigation';
+import { Logo } from '@/components/shared';
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Grid,
+  CreditCard,
+  Info,
+  FileText,
+  Phone,
+  Mail,
+  Users,
+  TrendingUp,
+  Calculator,
+  CheckSquare,
+  Settings,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-const navLinks = [
-  { 
-    label: 'Produkt', 
-    href: '#features',
-    children: [
-      { label: 'Alle Agenten', href: '/dashboard/agents' },
-      { label: 'Rezeption', href: '/dashboard/agents' },
-      { label: 'E-Mail', href: '/dashboard/agents' },
-      { label: 'Marketing', href: '/dashboard/agents' },
-    ]
+type NavSection = {
+  title: string;
+  links: { label: string; href: string; description?: string }[];
+};
+
+type NavItem = {
+  label: string;
+  icon: typeof Grid;
+  sections: NavSection[];
+};
+
+const navItems: NavItem[] = [
+  {
+    label: 'Produkt',
+    icon: Grid,
+    sections: [
+      {
+        title: 'Agenten-Hub',
+        links: [
+          { label: 'Alle Agenten', href: '/dashboard/agents', description: '30+ KI-Spezialisten' },
+          { label: 'Rezeption', href: '/dashboard/agents', description: 'Anrufannahme & Routing' },
+          { label: 'E-Mail Desk', href: '/dashboard/emails', description: 'Antwort-Assistenz' },
+        ],
+      },
+      {
+        title: 'Workflows',
+        links: [
+          { label: 'Leads', href: '/dashboard/leads', description: 'Scoring & Übergabe' },
+          { label: 'Marketing', href: '/dashboard', description: 'Kampagnensteuerung' },
+          { label: 'Buchhaltung', href: '/dashboard', description: 'Dokumenten-Assistenz' },
+        ],
+      },
+    ],
   },
-  { label: 'Preise', href: '/#pricing' },
-  { label: 'Über uns', href: '/about' },
-  { label: 'Blog', href: '/blog' },
+  {
+    label: 'Preise',
+    icon: CreditCard,
+    sections: [
+      {
+        title: 'Pakete',
+        links: [
+          { label: 'Starter', href: '/#pricing', description: 'Für kleine Teams' },
+          { label: 'Professional', href: '/#pricing', description: 'Für wachsende KMU' },
+          { label: 'Enterprise', href: '/#pricing', description: 'Custom & SLA' },
+        ],
+      },
+      {
+        title: 'Support',
+        links: [
+          { label: 'FAQ', href: '/help', description: 'Setup-Fragen' },
+          { label: 'Kontakt', href: '/contact', description: 'Sales & Beratung' },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Über uns',
+    icon: Info,
+    sections: [
+      {
+        title: 'Unternehmen',
+        links: [
+          { label: 'Mission', href: '/about', description: 'Swiss Made KI' },
+          { label: 'Karriere', href: '/careers', description: 'Jobs & Culture' },
+          { label: 'Partner', href: '/partners', description: 'Ökosystem' },
+        ],
+      },
+      {
+        title: 'Vertrauen',
+        links: [
+          { label: 'Datenschutz', href: '/privacy', description: 'DSGVO & Hosting' },
+          { label: 'Sicherheit', href: '/status', description: 'Status & SLA' },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Blog',
+    icon: FileText,
+    sections: [
+      {
+        title: 'Ressourcen',
+        links: [
+          { label: 'Blog', href: '/blog', description: 'News & Cases' },
+          { label: 'Docs', href: '/docs', description: 'Anleitungen' },
+          { label: 'Community', href: '/community', description: 'Events & Forum' },
+        ],
+      },
+    ],
+  },
 ];
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<NavItem | null>(null);
+  const closeTimer = useRef<NodeJS.Timeout | null>(null);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleMouseEnter = (item: NavItem) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setHoveredItem(item);
+  };
+
+  const handleMouseLeave = () => {
+    closeTimer.current = setTimeout(() => {
+      setHoveredItem(null);
+    }, 150);
+  };
 
   return (
-    <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-white/90 backdrop-blur-xl shadow-sm border-b border-gray-100' 
-            : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Logo />
-
-            {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <div
-                  key={link.label}
-                  className="relative"
-                  onMouseEnter={() => link.children && setActiveDropdown(link.label)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  {link.children ? (
-                    <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                      {link.label}
-                      <ChevronDown className="w-4 h-4" />
-                    </button>
-                  ) : (
-                    <Link 
-                      href={link.href}
-                      className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
-                    >
-                      {link.label}
-                    </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <div className="flex items-center gap-8">
+          <Logo />
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
+            {navItems.map((item) => (
+              <div
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => handleMouseEnter(item)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button
+                  className={cn(
+                    "flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-fuchsia-600 py-2",
+                    hoveredItem?.label === item.label ? "text-fuchsia-600" : "text-gray-600"
                   )}
+                >
+                  {item.label}
+                  <ChevronDown className={cn("h-4 w-4 transition-transform", hoveredItem?.label === item.label && "rotate-180")} />
+                </button>
+              </div>
+            ))}
+          </nav>
+        </div>
 
-                  {/* Dropdown */}
-                  <AnimatePresence>
-                    {link.children && activeDropdown === link.label && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 overflow-hidden"
+        {/* Desktop Actions */}
+        <div className="hidden md:flex items-center gap-4">
+          <Link
+            href="/login"
+            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            Anmelden
+          </Link>
+          <Link
+            href="/register"
+            className="rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:shadow-lg hover:brightness-110 transition-all"
+          >
+            Kostenlos starten
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden p-2 text-gray-600"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
+
+      {/* Mega Menu Dropdown */}
+      <div
+        className={cn(
+          "absolute left-0 top-full w-full overflow-hidden bg-white border-b border-gray-100 shadow-xl transition-all duration-300 ease-in-out",
+          hoveredItem ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+        )}
+        onMouseEnter={() => {
+          if (closeTimer.current) clearTimeout(closeTimer.current);
+        }}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+          {hoveredItem && (
+            <div className="grid grid-cols-2 gap-8">
+              {hoveredItem.sections.map((section) => (
+                <div key={section.title}>
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">
+                    {section.title}
+                  </h3>
+                  <div className="grid gap-3">
+                    {section.links.map((link) => (
+                      <Link
+                        key={link.label}
+                        href={link.href}
+                        className="group flex flex-col rounded-lg p-3 hover:bg-gray-50 transition-colors"
                       >
-                        {link.children.map((child) => (
-                          <Link
-                            key={child.label}
-                            href={child.href}
-                            className="block px-4 py-2 text-gray-600 hover:text-fuchsia-600 hover:bg-fuchsia-50 transition-colors"
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                        <span className="text-sm font-semibold text-gray-900 group-hover:text-fuchsia-600">
+                          {link.label}
+                        </span>
+                        {link.description && (
+                          <span className="text-xs text-gray-500 mt-0.5">
+                            {link.description}
+                          </span>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
+          )}
+        </div>
+      </div>
 
-            {/* CTA Buttons */}
-            <div className="hidden lg:flex items-center gap-4">
-              <Link 
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-xl md:hidden overflow-y-auto max-h-[calc(100vh-80px)]">
+          <div className="p-4 space-y-4">
+            {navItems.map((item) => (
+              <div key={item.label} className="space-y-2">
+                <div className="font-semibold text-gray-900 px-2">{item.label}</div>
+                <div className="pl-4 space-y-1 border-l-2 border-gray-100">
+                  {item.sections.flatMap(section => section.links).map(link => (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className="block py-2 px-2 text-sm text-gray-600 hover:text-fuchsia-600 hover:bg-gray-50 rounded-md"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div className="pt-4 border-t border-gray-100 space-y-3">
+              <Link
                 href="/login"
-                className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+                className="block w-full text-center py-2.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50"
+                onClick={() => setMobileMenuOpen(false)}
               >
                 Anmelden
               </Link>
-              <Link href="/register">
-                <GradientButton size="sm">
-                  Kostenlos starten
-                </GradientButton>
+              <Link
+                href="/register"
+                className="block w-full text-center py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-fuchsia-600 to-orange-500 rounded-lg hover:brightness-110"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Kostenlos starten
               </Link>
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 text-gray-600 hover:text-gray-900"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
           </div>
         </div>
-      </motion.nav>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 lg:hidden bg-white pt-24 px-6"
-          >
-            <div className="space-y-4">
-              {navLinks.map((link) => (
-                <div key={link.label}>
-                  {link.children ? (
-                    <div className="space-y-2">
-                      <span className="block text-lg font-semibold text-gray-900">
-                        {link.label}
-                      </span>
-                      <div className="pl-4 space-y-2">
-                        {link.children.map((child) => (
-                          <Link
-                            key={child.label}
-                            href={child.href}
-                            className="block text-gray-600 hover:text-fuchsia-600"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="block text-lg font-semibold text-gray-900 hover:text-fuchsia-600"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  )}
-                </div>
-              ))}
-
-              <div className="pt-6 border-t border-gray-100 space-y-4">
-                <Link 
-                  href="/login"
-                  className="block text-center py-3 text-gray-600 font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Anmelden
-                </Link>
-                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
-                  <GradientButton className="w-full">
-                    Kostenlos starten
-                  </GradientButton>
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+      )}
+    </header>
   );
 }
 
 export default Navbar;
-

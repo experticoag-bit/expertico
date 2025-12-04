@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { Logo } from '@/components/shared';
-import { Linkedin, Twitter, Instagram, Youtube, Mail } from 'lucide-react';
+import { Linkedin, Twitter, Instagram, Youtube, Send } from 'lucide-react';
 
 const footerLinks = {
   produkt: [
-    { label: 'Alle Agenten', href: '/agents' },
-    { label: 'Rezeption', href: '/agents/rezeption' },
-    { label: 'E-Mail', href: '/agents/email' },
-    { label: 'Marketing', href: '/agents/marketing' },
-    { label: 'Preise', href: '/pricing' },
+    { label: 'Alle Agenten', href: '/dashboard/agents' },
+    { label: 'Rezeption', href: '/dashboard/agents' },
+    { label: 'E-Mail', href: '/dashboard/agents' },
+    { label: 'Marketing', href: '/dashboard/agents' },
+    { label: 'Preise', href: '/#pricing' },
   ],
   unternehmen: [
     { label: 'Über uns', href: '/about' },
@@ -30,7 +30,7 @@ const footerLinks = {
     { label: 'Datenschutz', href: '/privacy' },
     { label: 'AGB', href: '/terms' },
     { label: 'Impressum', href: '/imprint' },
-    { label: 'Cookie-Richtlinie', href: '/cookies' },
+    { label: 'Cookies', href: '/cookies' },
   ],
 };
 
@@ -43,35 +43,18 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
+    <footer className="bg-gray-900 text-gray-300 pt-16 pb-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
+          
           {/* Brand Column */}
-          <div className="col-span-2">
+          <div className="lg:col-span-4">
             <div className="mb-6">
-              <Logo showText={true} />
+              <Logo size="lg" showText={true} />
             </div>
-            <p className="text-gray-400 mb-6 max-w-xs">
-              Die führende KI-Plattform für Schweizer KMU. 30+ spezialisierte Agenten für Ihren Geschäftserfolg.
+            <p className="text-gray-400 mb-6 text-sm leading-relaxed">
+              Die führende KI-Plattform für Schweizer KMU – entwickelt mit Fokus auf Datenschutz, Präzision und einfache Integration.
             </p>
-            
-            {/* Newsletter */}
-            <div className="mb-6">
-              <p className="text-sm font-medium text-white mb-2">Newsletter abonnieren</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="ihre@email.ch"
-                  className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-fuchsia-500 transition-colors"
-                />
-                <button className="px-4 py-2 bg-gradient-to-r from-fuchsia-600 to-orange-500 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
-                  <Mail className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Social Links */}
             <div className="flex gap-4">
               {socialLinks.map((social) => (
                 <a
@@ -79,83 +62,64 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-800 text-gray-400 transition-all hover:bg-gray-700 hover:text-white"
                   aria-label={social.label}
                 >
-                  <social.icon className="w-5 h-5" />
+                  <social.icon className="h-5 w-5" />
                 </a>
               ))}
             </div>
           </div>
 
           {/* Links Columns */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Produkt</h4>
-            <ul className="space-y-3">
-              {footerLinks.produkt.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-gray-400 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-semibold mb-4">Unternehmen</h4>
-            <ul className="space-y-3">
-              {footerLinks.unternehmen.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-gray-400 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-semibold mb-4">Ressourcen</h4>
-            <ul className="space-y-3">
-              {footerLinks.ressourcen.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-gray-400 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-semibold mb-4">Rechtliches</h4>
-            <ul className="space-y-3">
-              {footerLinks.rechtliches.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-gray-400 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-8">
+            {Object.entries(footerLinks).map(([title, links]) => (
+              <div key={title}>
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-white mb-4">
+                  {title}
+                </h3>
+                <ul className="space-y-3">
+                  {links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        className="text-sm text-gray-400 transition-colors hover:text-white"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} Expertico AG. Alle Rechte vorbehalten.
-            </p>
-            <div className="flex items-center gap-6 text-sm text-gray-500">
+        {/* Newsletter & Bottom */}
+        <div className="mt-12 border-t border-gray-800 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            
+            <div className="w-full md:w-auto">
+              <p className="text-sm font-medium text-white mb-2">Newsletter abonnieren</p>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="ihre@email.ch"
+                  className="w-full md:w-64 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all placeholder-gray-500"
+                />
+                <button className="px-4 py-2 bg-fuchsia-600 text-white rounded-lg hover:bg-fuchsia-500 transition-colors flex items-center justify-center">
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-xs text-gray-500">
+              <span>© {new Date().getFullYear()} Expertico AG. Alle Rechte vorbehalten.</span>
               <span className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                Alle Systeme operativ
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                Systeme operativ
               </span>
-              <span>🇨🇭 Made in Switzerland</span>
+              <span>🇨🇭 Made in Zurich</span>
             </div>
           </div>
         </div>
@@ -165,4 +129,3 @@ export function Footer() {
 }
 
 export default Footer;
-

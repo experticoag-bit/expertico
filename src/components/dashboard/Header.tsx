@@ -12,13 +12,8 @@ import {
   Moon,
   Sun,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
-interface HeaderProps {
-  sidebarOpen: boolean;
-}
-
-export function Header({ sidebarOpen }: HeaderProps) {
+export function Header() {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -30,10 +25,7 @@ export function Header({ sidebarOpen }: HeaderProps) {
   ];
 
   return (
-    <header className={cn(
-      'sticky top-0 z-30 h-20 bg-white/80 backdrop-blur-xl border-b border-gray-200 transition-all duration-300',
-      sidebarOpen ? 'ml-64' : 'ml-20'
-    )}>
+    <header className="sticky top-0 z-40 h-20 border-b border-gray-200 bg-white/80 backdrop-blur-xl">
       <div className="flex items-center justify-between h-full px-6">
         {/* Search */}
         <div className="flex-1 max-w-xl">
@@ -160,4 +152,3 @@ export function Header({ sidebarOpen }: HeaderProps) {
 }
 
 export default Header;
-
