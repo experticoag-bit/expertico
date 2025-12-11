@@ -132,7 +132,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-transparent bg-white/60 backdrop-blur-md shadow-sm">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <div className="flex items-center gap-8">
@@ -171,7 +171,7 @@ export function Navbar() {
           </Link>
           <Link
             href="/register"
-            className="rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:shadow-lg hover:brightness-110 transition-all"
+            className="rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 px-5 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg hover:brightness-110 active:scale-95 transition-all"
           >
             Kostenlos starten
           </Link>
@@ -179,8 +179,9 @@ export function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2 text-gray-600"
+          className="md:hidden p-3 text-gray-600 rounded-md hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-fuchsia-500"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
         >
           {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
@@ -190,7 +191,7 @@ export function Navbar() {
       <div
         className={cn(
           "absolute left-0 top-full w-full overflow-hidden bg-white border-b border-gray-100 shadow-xl transition-all duration-300 ease-in-out",
-          hoveredItem ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+          hoveredItem ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
         )}
         onMouseEnter={() => {
           if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -242,7 +243,7 @@ export function Navbar() {
                     <Link
                       key={link.label}
                       href={link.href}
-                      className="block py-2 px-2 text-sm text-gray-600 hover:text-fuchsia-600 hover:bg-gray-50 rounded-md"
+                      className="block py-3 px-3 text-base text-gray-700 hover:text-fuchsia-600 hover:bg-gray-50 rounded-md"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.label}
@@ -254,14 +255,14 @@ export function Navbar() {
             <div className="pt-4 border-t border-gray-100 space-y-3">
               <Link
                 href="/login"
-                className="block w-full text-center py-2.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50"
+                className="block w-full text-center py-3 text-base font-medium text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Anmelden
               </Link>
               <Link
                 href="/register"
-                className="block w-full text-center py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-fuchsia-600 to-orange-500 rounded-lg hover:brightness-110"
+                className="block w-full text-center py-3 text-base font-semibold text-white bg-gradient-to-r from-fuchsia-600 to-orange-500 rounded-lg hover:brightness-110 active:scale-95 transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Kostenlos starten

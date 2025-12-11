@@ -1,3 +1,7 @@
+import { Pricing } from '@/components/marketing/Pricing';
+import MaterialNavbar from '@/components/marketing/MaterialNavbar';
+import MaterialHero from '@/components/marketing/MaterialHero';
+
 const stats = [
   { label: 'Telefon & E-Mail entlastet', value: '24/7' },
   { label: 'Aktive Agenten', value: '30+' },
@@ -111,34 +115,17 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#f3f4f6] text-gray-900">
       <div className="mx-auto max-w-6xl px-4 py-8 lg:px-8">
-        <header className="flex flex-wrap items-center justify-between gap-4 rounded-full bg-white/80 px-6 py-3 shadow-md shadow-slate-200 backdrop-blur">
-          <div className="text-xl font-black tracking-tight">
-            Exper<span className="text-emerald-600">tico</span>
+          <MaterialNavbar />
+          <MaterialHero />
+          {/* Pricing component remains below as a Tailwind section for now */}
+          <div className="mt-10">
+            <Pricing />
           </div>
-          <nav className="hidden items-center gap-6 text-sm font-semibold text-gray-600 md:flex">
-            {['Home', 'About', 'Features', 'How it works', 'Produkt'].map((item) => (
-              <a key={item} href="#" className="rounded-full px-3 py-1 hover:bg-slate-100">
-                {item}
-              </a>
-            ))}
-          </nav>
-          <div className="flex gap-3 text-sm font-semibold">
-            <a href="/login" className="inline-flex items-center rounded-full border border-slate-200 px-4 py-2">
-              Sign In
-            </a>
-            <a
-              href="/register"
-              className="inline-flex items-center rounded-full bg-emerald-500 px-4 py-2 text-white shadow-lg shadow-emerald-500/30"
-            >
-              Get Started
-            </a>
-          </div>
-        </header>
 
         <main className="mt-12 space-y-16">
           <section className="grid items-center gap-10 rounded-[40px] bg-white p-10 shadow-lg lg:grid-cols-[1.2fr_0.8fr]">
             <div className="space-y-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-500">Attention</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-fuchsia-500">Attention</p>
               <h1 className="text-4xl font-black leading-tight text-gray-900 sm:text-5xl">
                 Dein digitales Praktikanten-Team. 24/7. Ohne Büroplatz.
               </h1>
@@ -154,19 +141,19 @@ export default function Home() {
               <div className="flex flex-wrap gap-4">
                 <a
                   href="/register"
-                  className="inline-flex items-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/40"
+                  className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-fuchsia-500/40 hover:shadow-xl hover:brightness-110 active:scale-95 transition-all"
                 >
                   Jetzt kostenlose Demo anfragen
                 </a>
                 <a
                   href="#team"
-                  className="inline-flex items-center rounded-full border border-gray-200 px-6 py-3 text-sm font-semibold text-gray-700 hover:border-emerald-200 hover:text-emerald-600"
+                  className="w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-gray-200 px-6 py-3 text-sm font-semibold text-gray-700 hover:border-fuchsia-300 hover:text-fuchsia-600 hover:bg-fuchsia-50 active:scale-95 transition-all"
                 >
                   Alle KI-Agenten entdecken
                 </a>
               </div>
             </div>
-            <div className="rounded-[32px] border border-emerald-100 bg-gradient-to-b from-white to-emerald-50 p-6 shadow-inner">
+            <div className="rounded-[32px] border border-fuchsia-50 bg-gradient-to-b from-white to-[rgba(233,30,140,0.03)] p-6 shadow-inner">
               <p className="text-sm font-semibold text-gray-500">Ihr digitales Backoffice</p>
               <div className="mt-6 space-y-4">
                 {stats.map((stat) => (
@@ -180,7 +167,7 @@ export default function Home() {
           </section>
 
           <section className="rounded-[32px] bg-white p-10 shadow">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-500">Warum Expertico?</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-fuchsia-500">Warum Expertico?</p>
             <h2 className="mt-4 text-3xl font-bold text-gray-900">
               Mehr Anfragen, zu wenig Zeit – wir bauen Ihr digitales Team.
             </h2>
@@ -211,7 +198,7 @@ export default function Home() {
             <div className="space-y-4">
               {agentTeam.map((agent) => (
                 <div key={agent.title} className="rounded-2xl border border-gray-100 bg-gray-50 p-5">
-                  <p className="text-sm font-semibold text-emerald-600">{agent.title}</p>
+                  <p className="text-sm font-semibold text-fuchsia-600">{agent.title}</p>
                   <p className="mt-1 text-sm text-gray-600">{agent.description}</p>
                 </div>
               ))}
@@ -219,95 +206,85 @@ export default function Home() {
           </section>
 
           <section className="rounded-[32px] bg-white p-10 shadow">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-500">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-fuchsia-500">
               So funktioniert Expertico für Ihr KMU
             </p>
             <div className="mt-6 grid gap-6 sm:grid-cols-3">
               {process.map((step) => (
                 <div key={step.title} className="rounded-2xl border border-gray-100 bg-gray-50 p-5">
-                  <p className="text-sm font-semibold text-emerald-600">{step.title}</p>
+                  <p className="text-sm font-semibold text-fuchsia-600">{step.title}</p>
                   <p className="mt-2 text-sm text-gray-600">{step.text}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="rounded-[32px] bg-white p-10 shadow">
-            <div className="flex flex-col gap-4 text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-500">
-                Unsere Pakete
-              </p>
-              <h2 className="text-3xl font-bold text-gray-900">
-                Von ersten Tests bis zur vollen Integration.
-              </h2>
-              <p className="text-gray-600">Wählen Sie den Reifegrad – Upgrades jederzeit möglich.</p>
-            </div>
-            <div className="mt-10 grid gap-6 lg:grid-cols-3">
-              {packages.map((pkg) => (
-                <div
-                  key={pkg.title}
-                  className="flex h-full flex-col rounded-3xl border border-gray-100 bg-gray-50 p-6 shadow-sm"
-                >
-                  <div className="mb-4 flex items-center justify-between">
-                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{pkg.title}</p>
-                    <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-emerald-600">
-                      {pkg.badge}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">{pkg.description}</h3>
-                  <p className="mt-2 text-sm text-gray-500">{pkg.target}</p>
-                  <ul className="mt-4 space-y-2 text-sm text-gray-600">
-                    {pkg.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2">
-                        <span className="mt-1 h-2 w-2 rounded-full bg-emerald-500" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-4 text-sm font-semibold text-gray-700">{pkg.benefit}</p>
-                  <div className="mt-auto pt-4">
-                    <a
-                      href="/register"
-                      className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow shadow-emerald-500/30"
-                    >
-                      Paket wählen
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          <Pricing />
 
-          <section className="rounded-[32px] bg-emerald-900 p-10 text-white shadow-lg">
-            <div className="space-y-4">
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-200">
-                Nächster Schritt
-              </p>
-              <h2 className="text-3xl font-bold">Erleben Sie, wie sich ein digitales KI-Team anfühlt.</h2>
-              <p className="text-sm text-emerald-100">
-                Wir zeigen live: Rezeption, E-Mail & Leads – mit echten Beispielen aus Ihrem Unternehmen.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="/register"
-                  className="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-emerald-700"
-                >
-                  Jetzt unverbindliche Demo buchen
-                </a>
-                <a href="#team" className="text-sm font-semibold text-white/80 hover:text-white">
-                  Agentenübersicht ansehen →
-                </a>
+          <section className="rounded-2xl overflow-hidden p-0">
+            <div className="bg-gradient-to-r from-fuchsia-600 to-orange-500 p-6 text-white shadow-md">
+              <div className="space-y-4">
+                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/95">Nächster Schritt</p>
+                <h2 className="text-3xl font-bold">Erleben Sie, wie sich ein digitales KI-Team anfühlt.</h2>
+                <p className="text-sm text-white/90">Wir zeigen live: Rezeption, E-Mail & Leads – mit echten Beispielen aus Ihrem Unternehmen.</p>
+                <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                  <a
+                    href="/register"
+                    className="inline-flex items-center justify-center rounded-md bg-white px-8 py-4 text-sm font-semibold text-fuchsia-600 hover:bg-gray-100 hover:text-fuchsia-700 active:scale-95 transition-all"
+                  >
+                    Jetzt unverbindliche Demo buchen
+                  </a>
+                  <a
+                    href="#team"
+                    className="inline-flex items-center text-sm font-semibold text-white/95 hover:text-white hover:underline active:scale-95 transition-all"
+                  >
+                    Agentenübersicht ansehen →
+                  </a>
+                </div>
               </div>
             </div>
           </section>
         </main>
 
-        <footer className="mt-16 rounded-3xl bg-white p-8 text-sm text-gray-500 shadow-inner">
-          <div className="flex flex-wrap gap-4">
-            <span>© {new Date().getFullYear()} Expertico AG</span>
-            <span>Datenschutz</span>
-            <span>Impressum</span>
-            <span>Support</span>
+        <footer className="mt-16 rounded-2xl bg-white p-8 text-sm text-gray-600 shadow-inner border-t border-gray-100">
+          <div className="mx-auto max-w-6xl grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div>
+              <div className="text-2xl font-bold text-gray-900">Expertico</div>
+              <p className="mt-2 text-sm text-gray-600">KI-Agenten für Schweizer KMU — Datenschutzkonform & skalierbar.</p>
+            </div>
+
+            <div className="flex justify-between sm:justify-center">
+              <div>
+                <h4 className="text-sm font-semibold text-gray-800 mb-3">Produkt</h4>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li><a href="#" className="hover:text-fuchsia-600">Agenten</a></li>
+                  <li><a href="#" className="hover:text-fuchsia-600">Preise</a></li>
+                  <li><a href="#" className="hover:text-fuchsia-600">Integrationen</a></li>
+                </ul>
+              </div>
+              <div className="hidden sm:block">
+                <h4 className="text-sm font-semibold text-gray-800 mb-3">Unternehmen</h4>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li><a href="#" className="hover:text-fuchsia-600">Über uns</a></li>
+                  <li><a href="#" className="hover:text-fuchsia-600">Karriere</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="text-sm text-gray-600">
+              <h4 className="text-sm font-semibold text-gray-800 mb-3">Kontakt</h4>
+              <p className="text-sm">hello@expertico.ch</p>
+              <p className="mt-2 text-sm">+41 31 539 19 78</p>
+              <div className="mt-4 flex gap-3">
+                <a className="w-8 h-8 rounded-full bg-fuchsia-50 text-fuchsia-600 flex items-center justify-center" href="#">F</a>
+                <a className="w-8 h-8 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center" href="#">L</a>
+                <a className="w-8 h-8 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center" href="#">I</a>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 border-t border-gray-100 pt-4 text-center text-xs text-gray-400">
+            © {new Date().getFullYear()} Expertico AG — Alle Rechte vorbehalten
           </div>
         </footer>
       </div>

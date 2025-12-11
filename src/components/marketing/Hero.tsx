@@ -71,20 +71,20 @@ export function Hero() {
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Link
                 href="/register"
-                className="inline-flex justify-center items-center px-6 py-3 text-base font-semibold text-white rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 shadow-lg hover:shadow-xl hover:brightness-110 transition-all"
+                className="w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 text-base font-semibold text-white rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 shadow-lg shadow-fuchsia-500/30 hover:shadow-xl hover:shadow-fuchsia-500/40 hover:brightness-110 active:scale-95 transition-all"
               >
                 Kostenlos testen
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex justify-center items-center px-6 py-3 text-base font-semibold text-gray-700 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all"
+                className="w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 text-base font-semibold text-gray-700 bg-white border border-gray-200 rounded-full hover:bg-fuchsia-50 hover:border-fuchsia-200 hover:text-fuchsia-600 active:scale-95 transition-all"
               >
                 Preise vergleichen
               </Link>
             </div>
 
-            <div className="grid grid-cols-3 gap-8 border-t border-gray-100 pt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-gray-100 pt-8">
               {heroStats.map((stat) => (
                 <div key={stat.label}>
                   <div className="text-2xl font-bold text-gray-900">{stat.value}</div>

@@ -1,128 +1,84 @@
-'use client';
-
-import { CheckCircle, Zap, Shield, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 const plans = [
   {
-    name: 'Starter',
-    price: 'CHF 299',
-    period: '/ Monat',
-    description: 'Für lokale Teams, die ihre ersten Agenten aktivieren.',
-    features: ['5 Agenten', '500 Anrufminuten', '1.000 E-Mails', 'E-Mail Support'],
-    cta: 'Jetzt starten',
+    id: 'explore',
+    name: 'EXPLORE',
+    price: 'CHF 0',
+    period: 'Pilot / ab Anfrage',
+    features: ['Telefon & E‑Mail Basis', 'Dashboard & Logs', 'Standard Onboarding'],
     highlight: false,
   },
   {
-    name: 'Professional',
-    price: 'CHF 699',
+    id: 'grow',
+    name: 'GROW',
+    price: 'CHF 249',
     period: '/ Monat',
-    description: 'Skaliert mit Marketing, Sales und Backoffice.',
-    features: [
-      '15 Agenten',
-      '2.000 Anrufminuten',
-      '5.000 E-Mails',
-      'Priority Support',
-      'API-Zugang',
-    ],
-    cta: 'Kostenlos testen',
+    features: ['Alles aus EXPLORE', 'Marketing Agent', 'Lead-Qualifizierung', 'Reports'],
     highlight: true,
-    badge: 'Beliebt',
   },
   {
-    name: 'Enterprise',
-    price: 'Auf Anfrage',
+    id: 'integrate',
+    name: 'INTEGRATE',
+    price: 'auf Anfrage',
     period: '',
-    description: 'Individuelle SLAs, Custom Training und Integrationen.',
-    features: ['Alle 30+ Agenten', 'Unbegrenzte Limits', 'SLA 99.9%', 'Dedicated Success Team'],
-    cta: 'Beratung buchen',
+    features: ['Volle Integration', 'Backoffice & Buchhaltung', 'Agent of Agents', 'SLA & Support'],
     highlight: false,
   },
 ];
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-20 bg-white lg:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-fuchsia-600 font-bold tracking-wide uppercase text-sm">Preise</span>
-          <h2 className="mt-3 text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Transparente Pakete ohne Zusatzkosten
-          </h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Wählen Sie den Umfang, der zu Ihren Prozessen passt. Upgrades sind jederzeit möglich.
-          </p>
+    <section className="bg-white rounded-2xl p-8 shadow-md">
+      <div className="mx-auto max-w-6xl">
+        <div className="text-center">
+          <p className="text-sm font-semibold uppercase tracking-widest text-fuchsia-500">Preise</p>
+          <h2 className="mt-4 text-3xl font-bold text-gray-900">Moderne Preispläne — klar, transparent, flexibel</h2>
+          <p className="mt-2 text-gray-600">Wähle das passende Paket für dein KMU. Monatlich kündbar oder individuell integriert.</p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3 lg:gap-8">
+        <div className="mt-8 grid gap-6 sm:grid-cols-3">
           {plans.map((plan) => (
             <div
-              key={plan.name}
-              className={cn(
-                "relative flex flex-col rounded-3xl border p-8 shadow-sm transition-all duration-300",
-                plan.highlight
-                  ? "border-fuchsia-500 bg-white ring-4 ring-fuchsia-500/10 scale-105 z-10"
-                  : "border-gray-200 bg-white hover:border-fuchsia-200 hover:shadow-lg"
-              )}
+              key={plan.id}
+              className={`flex flex-col rounded-2xl p-6 border ${plan.highlight ? 'border-fuchsia-200 shadow-xl' : 'border-gray-100 shadow-sm'} bg-gradient-to-b from-white to-[rgba(255,255,255,0.95)]`}
             >
-              {plan.highlight && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 px-4 py-1 text-xs font-bold text-white shadow-md">
-                    <Zap className="mr-1 h-3 w-3" fill="currentColor" />
-                    {plan.badge}
-                  </span>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs font-semibold tracking-widest text-gray-400">{plan.name}</div>
                 </div>
-              )}
-
-              <div className="mb-6">
-                <h3 className={cn("text-lg font-bold", plan.highlight ? "text-fuchsia-600" : "text-gray-900")}>
-                  {plan.name}
-                </h3>
-                <div className="mt-4 flex items-baseline text-gray-900">
-                  <span className="text-4xl font-extrabold tracking-tight">{plan.price}</span>
-                  <span className="ml-1 text-sm font-medium text-gray-500">{plan.period}</span>
-                </div>
-                <p className="mt-4 text-sm text-gray-500 leading-relaxed">{plan.description}</p>
+                {plan.highlight && (
+                  <div className="text-xs font-semibold rounded-full bg-fuchsia-50 text-fuchsia-600 px-3 py-1">Empfohlen</div>
+                )}
               </div>
 
-              <ul className="mb-8 space-y-4 flex-1">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start">
-                    <CheckCircle className={cn("h-5 w-5 flex-shrink-0", plan.highlight ? "text-fuchsia-500" : "text-gray-400")} />
-                    <span className="ml-3 text-sm font-medium text-gray-600">{feature}</span>
+              <div className="mt-6">
+                <div className="flex items-baseline gap-3">
+                  <span className="text-3xl font-extrabold text-gray-900">{plan.price}</span>
+                  <span className="text-sm text-gray-500">{plan.period}</span>
+                </div>
+                <p className="mt-3 text-sm text-gray-600">{plan.id === 'explore' ? 'Ideal zum Testen' : plan.id === 'grow' ? 'Skalierbar & beliebt' : 'Voll integrierte Lösung'}</p>
+              </div>
+
+              <ul className="mt-6 space-y-3 flex-1 text-sm text-gray-700">
+                {plan.features.map((f) => (
+                  <li key={f} className="flex items-start gap-3">
+                    <span className="mt-1 h-3 w-3 rounded-full bg-fuchsia-500/80" />
+                    <span>{f}</span>
                   </li>
                 ))}
               </ul>
 
-              <Link
-                href={plan.highlight ? '/register' : '/contact'}
-                className={cn(
-                  "block w-full rounded-xl py-3 text-center text-sm font-bold transition-all",
-                  plan.highlight
-                    ? "bg-gradient-to-r from-fuchsia-600 to-orange-500 text-white hover:brightness-110 shadow-lg hover:shadow-xl"
-                    : "bg-gray-50 text-gray-900 hover:bg-gray-100 border border-gray-200"
-                )}
-              >
-                {plan.cta}
-              </Link>
+              <div className="mt-6">
+                <Link
+                  href="/register"
+                  className={`inline-flex w-full items-center justify-center rounded-full px-4 py-3 font-semibold text-white transition-all ${plan.highlight ? 'bg-gradient-to-r from-fuchsia-600 to-orange-500 shadow-lg hover:shadow-xl hover:brightness-110 active:scale-95' : 'bg-fuchsia-500/80 hover:bg-fuchsia-600 hover:shadow-md active:scale-95'}`}
+                >
+                  {plan.highlight ? 'Loslegen' : 'Mehr erfahren'}
+                </Link>
+              </div>
             </div>
           ))}
-        </div>
-
-        <div className="mt-16 flex flex-wrap justify-center gap-8 text-sm font-medium text-gray-500">
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-fuchsia-500" />
-            <span>14 Tage kostenlos testen</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-orange-500" />
-            <span>In 5 Minuten live</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-emerald-500" />
-            <span>Jederzeit kündbar</span>
-          </div>
         </div>
       </div>
     </section>
@@ -130,3 +86,4 @@ export function Pricing() {
 }
 
 export default Pricing;
+

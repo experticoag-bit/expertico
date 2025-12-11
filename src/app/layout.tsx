@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import React from 'react';
+import MaterialProviders from '@/components/MaterialProviders';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="de" className="scroll-smooth">
       <body className={`${inter.variable} ${plusJakarta.variable} antialiased`}>
-        {children}
+        <MaterialProviders>
+          {children}
+        </MaterialProviders>
       </body>
     </html>
   );

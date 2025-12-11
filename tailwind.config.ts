@@ -8,6 +8,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: '1rem',
+          sm: '1.5rem',
+          lg: '2rem',
+          xl: '3rem',
+        },
+      },
       colors: {
         fuchsia: {
           50: '#fdf4ff',
@@ -20,6 +29,30 @@ const config: Config = {
           700: '#a21caf',
           800: '#86198f',
           900: '#701a75',
+        },
+        orange: {
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#FF6B35',
+          600: '#e55a2b',
+          700: '#c2411c',
+          800: '#9a3412',
+          900: '#7c2d0a',
+        },
+        cyan: {
+          50: '#ecfeff',
+          100: '#cffafe',
+          200: '#a5f3fc',
+          300: '#67e8f9',
+          400: '#22d3ee',
+          500: '#00D4FF',
+          600: '#00b8e0',
+          700: '#0891b2',
+          800: '#075985',
+          900: '#064e63',
         },
       },
       fontFamily: {

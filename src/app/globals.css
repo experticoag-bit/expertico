@@ -3,28 +3,25 @@
 @import "tailwindcss";
 
 :root {
-  /* Expertico Brand Colors - Premium Palette */
+  /* Expertico Brand Colors - Clean Business Palette */
   --primary-fuchsia: #E91E8C;
   --primary-fuchsia-dark: #C4177A;
   --primary-fuchsia-light: #F472B6;
-  --gradient-orange: #FF6B35;
-  --gradient-orange-dark: #E55A2B;
-  --accent-blue: #00D4FF;
-  --accent-blue-dark: #00B8E0;
-  --accent-cyan: #06B6D4;
-  
-  /* Premium Gradients */
-  --gradient-primary: linear-gradient(135deg, #E91E8C 0%, #FF6B35 50%, #00D4FF 100%);
-  --gradient-primary-subtle: linear-gradient(135deg, rgba(233, 30, 140, 0.1) 0%, rgba(255, 107, 53, 0.1) 50%, rgba(0, 212, 255, 0.1) 100%);
-  --gradient-fuchsia-orange: linear-gradient(135deg, #E91E8C 0%, #FF6B35 100%);
-  --gradient-cyan-blue: linear-gradient(135deg, #00D4FF 0%, #3B82F6 100%);
-  
-  /* Backgrounds - Modern & Clean */
+  --primary-orange: #FF6B35;
+  --primary-orange-dark: #E55A2B;
+  --primary-cyan: #00D4FF;
+  --primary-cyan-dark: #00B8E0;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(90deg, #E91E8C 0%, #FF6B35 50%, #00D4FF 100%);
+  --gradient-subtle: linear-gradient(90deg, rgba(233,30,140,0.06) 0%, rgba(255,107,53,0.06) 50%, rgba(0,212,255,0.06) 100%);
+
+  /* Backgrounds - White-first */
   --background: #FFFFFF;
-  --background-subtle: #FAFAFA;
-  --background-muted: #F3F4F6;
+  --background-subtle: #FBFBFB;
+  --background-muted: #F7F7F9;
   --background-dark: #0F172A;
-  --background-card: rgba(255, 255, 255, 0.9);
+  --background-card: rgba(255, 255, 255, 0.98);
   
   /* Text - High Contrast */
   --text-dark: #0F172A;
